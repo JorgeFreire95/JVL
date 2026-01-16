@@ -19,11 +19,6 @@ const Login = () => {
         e.preventDefault();
         setError('');
 
-        if (isGitHubPages) {
-            setError('El login solo funciona en la versión local. Necesitas ejecutar: npm run dev');
-            return;
-        }
-
         // Usar el email como campo principal
         const email = e.target.email.value;
         const password = e.target.password.value;
@@ -44,6 +39,8 @@ const Login = () => {
             console.error(err);
             if (err.response?.status === 409 || err.response?.data?.has_active_session) {
                 setError('Ya tienes una sesión activa. Cierra sesión primero desde el panel.');
+            } else if (err.message === 'No se pudo conectar al servidor') {
+                setError('No se pudo conectar al servidor. Intenta en la versión local.');
             } else {
                 setError('Credenciales inválidas. Intenta de nuevo.');
             }
@@ -63,9 +60,9 @@ const Login = () => {
 
                 {isGitHubPages && (
                     <div style={{
-                        backgroundColor: '#fff3cd',
-                        border: '1px solid #ffc107',
-                        color: '#856404',
+                        backgroundColor: '#d1ecf1',
+                        border: '1px solid #bee5eb',
+                        color: '#0c5460',
                         padding: '1rem',
                         borderRadius: '0.5rem',
                         marginBottom: '1rem',
@@ -74,8 +71,8 @@ const Login = () => {
                     }}>
                         <AlertCircle size={20} style={{ flexShrink: 0 }} />
                         <div>
-                            <strong>Versión de demostración</strong>
-                            <p>El login solo funciona en la versión local. Ejecuta <code>npm run dev</code> para usar todas las funciones.</p>
+                            <strong>Versión en línea</strong>
+                            <p>Conectando con el servidor en la nube. Si hay problemas, prueba la versión local con <code>npm run dev</code>.</p>
                         </div>
                     </div>
                 )}
@@ -84,7 +81,7 @@ const Login = () => {
                     {error && <div className="error-message" style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
                     <div className="form-group">
                         <label htmlFor="email">Correo Electrónico</label>
-                        <input type="email" id="email" placeholder="Tu correo electrónico" required disabled={isGitHubPages} />
+                        <input type="email" id="email" placeholder="Tu correo electrónico" required />
                     </div>
 
                     <div className="form-group">
@@ -92,10 +89,10 @@ const Login = () => {
                             <label htmlFor="password">Contraseña</label>
                             <a href="#" className="forgot-password">¿Olvidaste tu contraseña?</a>
                         </div>
-                        <input type="password" id="password" placeholder="••••••••" required disabled={isGitHubPages} />
+                        <input type="password" id="password" placeholder="••••••••" required />
                     </div>
 
-                    <button type="submit" className="btn btn-primary btn-block" disabled={isGitHubPages}>Iniciar Sesión</button>
+                    <button type="submit" className="btn btn-primary btn-block">Iniciar Sesión</button>
                 </form>
 
                 <div className="login-footer">

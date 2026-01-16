@@ -3,11 +3,21 @@ import axios from 'axios';
 // Detectar si estamos en GitHub Pages o en desarrollo local
 const isGitHubPages = window.location.hostname.includes('github.io');
 
-// En GitHub Pages, no se puede acceder a localhost, entonces la API no estará disponible
-// En desarrollo local, usar localhost:8000
-const API_URL = isGitHubPages 
-    ? '' // No hay API disponible en GitHub Pages
-    : 'http://localhost:8000/api';
+// Determinar la URL de la API según el entorno
+let API_URL;
+
+if (isGitHubPages) {
+    // En producción (GitHub Pages), usar el backend desplegado en Railway
+    API_URL = 'https://jvl-backend.up.railway.app/api';
+} else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    // En desarrollo local
+    API_URL = 'http://localhost:8000/api';
+} else {
+    // En otros casos
+    API_URL = '/api';
+}
+
+console.log('API URL:', API_URL);
 
 const api = axios.create({
     baseURL: API_URL,

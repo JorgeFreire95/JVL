@@ -3,22 +3,24 @@ import axios from 'axios';
 // Determinar la URL de la API según el entorno
 let API_URL;
 
+// URL del backend en producción (Railway / Render)
+const PROD_API_URL = 'https://jvl-backend.up.railway.app/api';
+
 const hostname = window.location.hostname;
 
-// En desarrollo local
+// En desarrollo local usamos el backend local de Django
 if (hostname === 'localhost' || hostname === '127.0.0.1') {
     API_URL = 'http://localhost:8000/api';
-    console.log('Modo desarrollo: usando localhost');
+    console.log('Modo desarrollo: usando backend local en http://localhost:8000');
 }
-// En GitHub Pages - intenta usar Render (o Railway)
+// En GitHub Pages - usar siempre el backend remoto
 else if (hostname.includes('github.io')) {
-    // Reemplaza esto con tu URL real de Render/Railway una vez desplegado
-    API_URL = 'https://tu-app-jvl.onrender.com/api';
-    console.log('GitHub Pages: intentando conectar a Render');
+    API_URL = PROD_API_URL;
+    console.log('GitHub Pages: usando backend en Railway');
 }
-// En otros casos
+// En otros casos (por ejemplo, si algún día sirves frontend y backend juntos)
 else {
-    API_URL = '/api';
+    API_URL = PROD_API_URL;
 }
 
 console.log('API URL:', API_URL);

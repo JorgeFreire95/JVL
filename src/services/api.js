@@ -1,6 +1,13 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api';
+// Detectar si estamos en GitHub Pages o en desarrollo local
+const isGitHubPages = window.location.hostname.includes('github.io');
+
+// En GitHub Pages, no se puede acceder a localhost, entonces la API no estará disponible
+// En desarrollo local, usar localhost:8000
+const API_URL = isGitHubPages 
+    ? '' // No hay API disponible en GitHub Pages
+    : 'http://localhost:8000/api';
 
 const api = axios.create({
     baseURL: API_URL,

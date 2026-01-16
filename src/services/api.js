@@ -1,19 +1,21 @@
 import axios from 'axios';
 
-// Detectar si estamos en GitHub Pages o en desarrollo local
-const isGitHubPages = window.location.hostname.includes('github.io');
-
 // Determinar la URL de la API según el entorno
 let API_URL;
 
-if (isGitHubPages) {
-    // En producción (GitHub Pages), usar el backend desplegado en Railway
-    API_URL = 'https://jvl-backend.up.railway.app/api';
-} else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    // En desarrollo local
+const hostname = window.location.hostname;
+
+// En desarrollo local
+if (hostname === 'localhost' || hostname === '127.0.0.1') {
     API_URL = 'http://localhost:8000/api';
-} else {
-    // En otros casos
+}
+// En GitHub Pages - si Railway está disponible
+else if (hostname.includes('github.io')) {
+    // Primero intenta Railway (producción)
+    API_URL = 'https://jvl-backend.up.railway.app/api';
+}
+// En otros casos
+else {
     API_URL = '/api';
 }
 
@@ -21,6 +23,7 @@ console.log('API URL:', API_URL);
 
 const api = axios.create({
     baseURL: API_URL,
+    withCredentials: true,
 });
 
 // Interceptor para manejo de errores
@@ -28,7 +31,7 @@ api.interceptors.response.use(
     response => response,
     error => {
         // Si es error de conexión, retornar datos vacíos en lugar de fallar
-        if (error.code === 'ERR_NETWORK' || error.code === 'ECONNREFUSED') {
+        if (error.code === 'ERR_NETWORK' || error.code === 'ECONNREFUSED' || error.message === 'Network Error') {
             console.warn('No se pudo conectar al servidor:', error.message);
             // Retornar datos vacíos en lugar de rechazar
             return { data: [] };

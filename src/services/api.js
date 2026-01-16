@@ -8,11 +8,12 @@ const hostname = window.location.hostname;
 // En desarrollo local
 if (hostname === 'localhost' || hostname === '127.0.0.1') {
     API_URL = 'http://localhost:8000/api';
+    console.log('Modo desarrollo: usando localhost');
 }
-// En GitHub Pages - si Railway está disponible
+// En GitHub Pages - intenta usar Railway
 else if (hostname.includes('github.io')) {
-    // Primero intenta Railway (producción)
     API_URL = 'https://jvl-backend.up.railway.app/api';
+    console.log('GitHub Pages: intentando conectar a Railway');
 }
 // En otros casos
 else {

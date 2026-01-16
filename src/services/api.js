@@ -10,10 +10,11 @@ if (hostname === 'localhost' || hostname === '127.0.0.1') {
     API_URL = 'http://localhost:8000/api';
     console.log('Modo desarrollo: usando localhost');
 }
-// En GitHub Pages - intenta usar Railway
+// En GitHub Pages - intenta usar Render (o Railway)
 else if (hostname.includes('github.io')) {
-    API_URL = 'https://jvl-backend.up.railway.app/api';
-    console.log('GitHub Pages: intentando conectar a Railway');
+    // Reemplaza esto con tu URL real de Render/Railway una vez desplegado
+    API_URL = 'https://tu-app-jvl.onrender.com/api';
+    console.log('GitHub Pages: intentando conectar a Render');
 }
 // En otros casos
 else {

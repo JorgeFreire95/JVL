@@ -6,10 +6,29 @@ const api = axios.create({
     baseURL: API_URL,
 });
 
+// Interceptor para manejo de errores
+api.interceptors.response.use(
+    response => response,
+    error => {
+        // Si es error de conexión, retornar datos vacíos en lugar de fallar
+        if (error.code === 'ERR_NETWORK' || error.code === 'ECONNREFUSED') {
+            console.warn('No se pudo conectar al servidor:', error.message);
+            // Retornar datos vacíos en lugar de rechazar
+            return { data: [] };
+        }
+        return Promise.reject(error);
+    }
+);
+
 // Announcements
 export const getAnnouncements = async () => {
-    const response = await api.get('/announcements/');
-    return response.data;
+    try {
+        const response = await api.get('/announcements/');
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener anuncios:', error);
+        return [];
+    }
 };
 
 export const createAnnouncement = async (data) => {
@@ -26,10 +45,14 @@ export const deleteAnnouncement = async (id) => {
     await api.delete(`/announcements/${id}/`);
 };
 
-// Contacts
 export const getContacts = async () => {
-    const response = await api.get('/contacts/');
-    return response.data;
+    try {
+        const response = await api.get('/contacts/');
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener contactos:', error);
+        return [];
+    }
 };
 
 export const createContact = async (data) => {
@@ -54,10 +77,14 @@ export const deleteContact = async (id) => {
     await api.delete(`/contacts/${id}/`);
 };
 
-// Users
 export const getUsers = async () => {
-    const response = await api.get('/users/');
-    return response.data;
+    try {
+        const response = await api.get('/users/');
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener usuarios:', error);
+        return [];
+    }
 };
 
 export const createUser = async (data) => {

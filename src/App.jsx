@@ -25,7 +25,7 @@ const Layout = ({ children }) => {
 
 function App() {
   return (
-    <Router>
+    <Router basename={import.meta.env.DEV ? '/' : '/JVL/'}>
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />

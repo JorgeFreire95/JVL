@@ -102,8 +102,25 @@ export const deleteUser = async (id) => {
 };
 
 export const loginUser = async (credentials) => {
-    const response = await api.post('/login/', credentials);
-    return response.data;
+    try {
+        const response = await api.post('/login/', credentials);
+        return response.data;
+    } catch (error) {
+        console.error('Error en loginUser:', error);
+        if (error.response) {
+            // El servidor respondió con un status fuera del rango 2xx
+            console.error('Error response:', error.response.data);
+            throw error.response.data;
+        } else if (error.request) {
+            // La petición fue hecha pero no hubo respuesta
+            console.error('No hay respuesta del servidor');
+            throw new Error('No se pudo conectar al servidor');
+        } else {
+            // Error en la configuración de la petición
+            console.error('Error config:', error.message);
+            throw error;
+        }
+    }
 };
 
 export const logoutUser = async (sessionToken) => {

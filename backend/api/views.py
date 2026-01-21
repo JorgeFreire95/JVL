@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from .models import Announcement, ContactCard, ActiveSession
-from .serializers import AnnouncementSerializer, ContactCardSerializer, UserSerializer
+from .models import Announcement, ContactCard, ActiveSession, Event
+from .serializers import AnnouncementSerializer, ContactCardSerializer, UserSerializer, EventSerializer
 import uuid
 import hashlib
 
@@ -92,3 +92,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 class ContactCardViewSet(viewsets.ModelViewSet):
     queryset = ContactCard.objects.all()
     serializer_class = ContactCardSerializer
+
+class EventViewSet(viewsets.ModelViewSet):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer

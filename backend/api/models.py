@@ -54,3 +54,18 @@ class ActiveSession(models.Model):
     class Meta:
         verbose_name = "Sesión Activa"
         verbose_name_plural = "Sesiones Activas"
+
+class Event(models.Model):
+    title = models.CharField(max_length=200, verbose_name="Título del Evento")
+    date = models.DateField(verbose_name="Fecha")
+    image = models.ImageField(upload_to='event_photos/', verbose_name="Foto del Evento")
+    sermon = models.TextField(verbose_name="Sermón Expuesto")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Evento Realizado"
+        verbose_name_plural = "Eventos Realizados"
+        ordering = ['-date']

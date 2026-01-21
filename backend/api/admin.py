@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Announcement, ContactCard
+from .models import Announcement, ContactCard, Event
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
@@ -12,3 +12,8 @@ class ContactCardAdmin(admin.ModelAdmin):
     list_display = ('name', 'role', 'order')
     list_editable = ('order',)
     search_fields = ('name', 'role')
+
+@admin.register(Event)
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('title', 'date')
+    search_fields = ('title', 'sermon')

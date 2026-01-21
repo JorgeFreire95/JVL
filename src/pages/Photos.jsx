@@ -1,0 +1,87 @@
+import React, { useState, useEffect } from 'react';
+import { getEvents } from '../services/api';
+import './Photos.css';
+
+const Photos = () => {
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                const data = await getEvents();
+                setEvents(data);
+            } catch (error) {
+                console.error("Error fetching events:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchEvents();
+    }, []);
+
+    // Helper to format date
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('es-ES', options);
+    };
+
+    return (
+        <div className="photos-page">
+            <div className="photos-header">
+                <h1>Eventos Realizados</h1>
+                <div className="underline"></div>
+            </div>
+
+            {loading ? (
+                <div style={{ textAlign: 'center', padding: '3rem' }}>
+                    <p>Cargando eventos...</p>
+                </div>
+            ) : events.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '3rem' }}>
+                    <p>No hay eventos registrados aún.</p>
+                </div>
+            ) : (
+                <div className="photos-grid">
+                    {events.map((event) => (
+                        <div className="flip-card" key={event.id}>
+                            <div className="flip-card-inner">
+                                <div className="flip-card-front">
+                                    {event.image ? (
+                                        <img src={event.image} alt={event.title} />
+                                    ) : (
+                                        <div style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            backgroundColor: '#f0f0f0',
+                                            color: '#888'
+                                        }}>
+                                            Sin Foto
+                                        </div>
+                                    )}
+                                    <div className="front-caption">
+                                        <h3>{event.title}</h3>
+                                        <p>{formatDate(event.date)}</p>
+                                    </div>
+                                </div>
+                                <div className="flip-card-back">
+                                    <h3>Sermón Expuesto</h3>
+                                    <div className="sermon-text">
+                                        {event.sermon}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default Photos;

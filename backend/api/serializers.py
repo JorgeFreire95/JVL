@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Announcement, ContactCard
+from .models import Announcement, ContactCard, Event
 import hashlib
 
 class UserSerializer(serializers.ModelSerializer):
@@ -90,4 +90,9 @@ class AnnouncementSerializer(serializers.ModelSerializer):
 class ContactCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactCard
+        fields = '__all__'
+
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
         fields = '__all__'

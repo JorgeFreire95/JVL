@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Plus, Edit, Trash2, Save, X,
-    Calendar, Users, UserPlus, User, LogOut, Menu
+    Calendar, Users, UserPlus, User, LogOut, Menu, Camera
 } from 'lucide-react';
 import {
     getAnnouncements, createAnnouncement, updateAnnouncement, deleteAnnouncement,
     getContacts, createContact, updateContact, deleteContact,
-    getUsers, createUser, updateUser, deleteUser, logoutUser
+    getUsers, createUser, updateUser, deleteUser, logoutUser,
+    getEvents, createEvent, updateEvent, deleteEvent
 } from '../services/api';
 import './AdminPanel.css';
 
@@ -17,6 +18,7 @@ const AdminPanel = () => {
     const [announcements, setAnnouncements] = useState([]);
     const [contacts, setContacts] = useState([]);
     const [users, setUsers] = useState([]);
+    const [events, setEvents] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [currentItem, setCurrentItem] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -49,14 +51,16 @@ const AdminPanel = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const [annData, contactData, userData] = await Promise.all([
+            const [annData, contactData, userData, eventData] = await Promise.all([
                 getAnnouncements(),
                 getContacts(),
-                getUsers()
+                getUsers(),
+                getEvents()
             ]);
             setAnnouncements(annData);
             setContacts(contactData);
             setUsers(userData);
+            setEvents(eventData);
         } catch (error) {
             console.error("Error loading data", error);
         } finally {
@@ -100,15 +104,7 @@ const AdminPanel = () => {
     const handleSaveContact = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        
-        // Debug: mostrar los datos que se van a enviar
-        console.log("Datos del contacto:");
-        for (let [key, value] of formData.entries()) {
-            if (key !== 'photo') {
-                console.log(`  ${key}: ${value}`);
-            }
-        }
-        
+
         if (!formData.get('photo').name) {
             formData.delete('photo');
         }
@@ -140,6 +136,43 @@ const AdminPanel = () => {
         }
     };
 
+    // Handlers for Events
+    const handleSaveEvent = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+
+        if (!formData.get('image').name) {
+            formData.delete('image');
+        }
+
+        try {
+            if (currentItem?.id) {
+                await updateEvent(currentItem.id, formData);
+            } else {
+                await createEvent(formData);
+            }
+            setIsEditing(false);
+            setCurrentItem(null);
+            fetchData();
+            alert("Evento guardado exitosamente");
+        } catch (error) {
+            console.error("Error saving event", error);
+            alert("Error al guardar evento.");
+        }
+    };
+
+    const handleDeleteEvent = async (id) => {
+        if (window.confirm('¿Estás seguro de eliminar este evento?')) {
+            try {
+                await deleteEvent(id);
+                fetchData();
+            } catch (error) {
+                console.error("Error deleting event", error);
+            }
+        }
+    };
+
+
     // Handlers for Users
     const handleSaveUser = async (e) => {
         e.preventDefault();
@@ -168,7 +201,7 @@ const AdminPanel = () => {
         } catch (error) {
             console.error("Error saving user", error);
             let msg = "Error al guardar usuario.";
-            
+
             // Revisar errores específicos del servidor
             if (error.response?.data) {
                 const data = error.response.data;
@@ -242,6 +275,20 @@ const AdminPanel = () => {
                     </div>
                 </div>
             ));
+        } else if (activeTab === 'events') {
+            return events.map(item => (
+                <div key={item.id} className="admin-card">
+                    <div className="card-header-img">
+                        {item.image ? <img src={item.image} alt={item.title} /> : <div className="placeholder-img">Sin Foto</div>}
+                    </div>
+                    <h3>{item.title}</h3>
+                    <p className="date">{item.date}</p>
+                    <div className="actions">
+                        <button onClick={() => openModal(item)} className="btn-icon"><Edit size={18} /></button>
+                        <button onClick={() => handleDeleteEvent(item.id)} className="btn-icon danger"><Trash2 size={18} /></button>
+                    </div>
+                </div>
+            ));
         } else if (activeTab === 'users') {
             return users.map(item => (
                 <div key={item.id} className="admin-card">
@@ -266,7 +313,7 @@ const AdminPanel = () => {
             <div className="admin-navbar-mobile">
                 <div className="navbar-content">
                     <h2>Panel Admin</h2>
-                    <button 
+                    <button
                         className="hamburger-btn"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     >
@@ -292,6 +339,15 @@ const AdminPanel = () => {
                             }}
                         >
                             <Users size={20} /> Contactos
+                        </button>
+                        <button
+                            className={`sidebar-btn ${activeTab === 'events' ? 'active' : ''}`}
+                            onClick={() => {
+                                setActiveTab('events');
+                                setMobileMenuOpen(false);
+                            }}
+                        >
+                            <Camera size={20} /> Eventos
                         </button>
                         {isAdmin && (
                             <button
@@ -330,6 +386,12 @@ const AdminPanel = () => {
                 >
                     <Users size={20} /> Contactos
                 </button>
+                <button
+                    className={`sidebar-btn ${activeTab === 'events' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('events')}
+                >
+                    <Camera size={20} /> Eventos
+                </button>
                 {isAdmin && (
                     <button
                         className={`sidebar-btn ${activeTab === 'users' ? 'active' : ''}`}
@@ -352,7 +414,8 @@ const AdminPanel = () => {
                 <div className="admin-header">
                     <h1>Gestión de {
                         activeTab === 'announcements' ? 'Anuncios' :
-                            activeTab === 'contacts' ? 'Contactos' : 'Usuarios'
+                            activeTab === 'contacts' ? 'Contactos' :
+                                activeTab === 'events' ? 'Eventos' : 'Usuarios'
                     }</h1>
                     {!(activeTab === 'users' && !isAdmin) && (
                         <button className="btn btn-primary" onClick={() => openModal()}>
@@ -382,7 +445,8 @@ const AdminPanel = () => {
                             <h2>
                                 {currentItem ? 'Editar' : 'Crear'} {
                                     activeTab === 'announcements' ? 'Anuncio' :
-                                        activeTab === 'contacts' ? 'Contacto' : 'Usuario'
+                                        activeTab === 'contacts' ? 'Contacto' :
+                                            activeTab === 'events' ? 'Evento' : 'Usuario'
                                 }
                             </h2>
                             <button onClick={() => setIsEditing(false)} className="close-btn"><X size={24} /></button>
@@ -393,7 +457,8 @@ const AdminPanel = () => {
                             autoComplete="off"
                             onSubmit={
                                 activeTab === 'announcements' ? handleSaveAnnouncement :
-                                    activeTab === 'contacts' ? handleSaveContact : handleSaveUser
+                                    activeTab === 'contacts' ? handleSaveContact :
+                                        activeTab === 'events' ? handleSaveEvent : handleSaveUser
                             }>
                             {/* Fake fields to trick browser autofill */}
                             <input type="text" style={{ display: 'none' }} />
@@ -446,14 +511,14 @@ const AdminPanel = () => {
                                     </div>
                                     <div className="form-group">
                                         <label>Link WhatsApp</label>
-                                        <input 
+                                        <input
                                             type="url"
-                                            name="whatsapp_link" 
-                                            defaultValue={currentItem?.whatsapp_link} 
+                                            name="whatsapp_link"
+                                            defaultValue={currentItem?.whatsapp_link}
                                             placeholder="https://wa.me/1234567890"
-                                            required 
+                                            required
                                         />
-                                        <small style={{fontSize: '0.8rem', color: '#666', marginTop: '0.25rem', display: 'block'}}>
+                                        <small style={{ fontSize: '0.8rem', color: '#666', marginTop: '0.25rem', display: 'block' }}>
                                             Formato: https://wa.me/NUMERODETELEFONO (sin espacios ni caracteres especiales)
                                         </small>
                                     </div>
@@ -465,6 +530,28 @@ const AdminPanel = () => {
                                         <label>Foto</label>
                                         <input type="file" name="photo" accept="image/*" />
                                         {currentItem?.photo && <p className="small-text">Foto actual: {currentItem.photo}</p>}
+                                    </div>
+                                </>
+                            )}
+
+                            {activeTab === 'events' && (
+                                <>
+                                    <div className="form-group">
+                                        <label>Título del Evento</label>
+                                        <input name="title" defaultValue={currentItem?.title} required />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Fecha</label>
+                                        <input type="date" name="date" defaultValue={currentItem?.date} required />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Sermón Expuesto</label>
+                                        <textarea name="sermon" defaultValue={currentItem?.sermon} required rows={6} placeholder="Escribe aquí el sermón o resumen del evento..." />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Foto del Evento (Portada)</label>
+                                        <input type="file" name="image" accept="image/*" />
+                                        {currentItem?.image && <p className="small-text">Foto actual: {currentItem.image}</p>}
                                     </div>
                                 </>
                             )}

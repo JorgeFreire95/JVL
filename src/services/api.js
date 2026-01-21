@@ -10,8 +10,8 @@ const hostname = window.location.hostname;
 
 // En desarrollo local usamos el backend local de Django
 if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    API_URL = 'http://localhost:8000/api';
-    console.log('Modo desarrollo: usando backend local en http://localhost:8000');
+    API_URL = 'http://127.0.0.1:8000/api';
+    console.log('Modo desarrollo: usando backend local en http://127.0.0.1:8000');
 }
 // En GitHub Pages - usar siempre el backend remoto
 else if (hostname.includes('github.io')) {
@@ -123,6 +123,38 @@ export const updateUser = async (id, data) => {
 
 export const deleteUser = async (id) => {
     await api.delete(`/users/${id}/`);
+};
+
+export const getEvents = async () => {
+    try {
+        const response = await api.get('/events/');
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener eventos:', error);
+        return [];
+    }
+};
+
+export const createEvent = async (data) => {
+    const response = await api.post('/events/', data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    return response.data;
+};
+
+export const updateEvent = async (id, data) => {
+    const response = await api.patch(`/events/${id}/`, data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    return response.data;
+};
+
+export const deleteEvent = async (id) => {
+    await api.delete(`/events/${id}/`);
 };
 
 export const loginUser = async (credentials) => {

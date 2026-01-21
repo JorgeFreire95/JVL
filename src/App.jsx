@@ -7,6 +7,7 @@ import Announcements from './pages/Announcements';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import AdminPanel from './pages/AdminPanel';
+import Photos from './pages/Photos';
 
 // Layout component to conditionally render Navbar and Footer
 const Layout = ({ children }) => {
@@ -30,6 +31,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/anuncios" element={<Announcements />} />
+          <Route path="/fotos" element={<Photos />} />
           <Route path="/contactos" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin-panel" element={<AdminPanel />} />

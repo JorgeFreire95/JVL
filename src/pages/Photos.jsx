@@ -30,21 +30,23 @@ const Photos = () => {
 
     return (
         <div className="photos-page">
-            <div className="photos-header">
-                <h1>Eventos Realizados</h1>
-                <div className="underline"></div>
+            <div className="page-header">
+                <div className="container">
+                    <h1>Eventos Realizados</h1>
+                    <p>Galería de nuestros últimos eventos y sermones.</p>
+                </div>
             </div>
 
             {loading ? (
-                <div style={{ textAlign: 'center', padding: '3rem' }}>
+                <div className="container" style={{ textAlign: 'center', padding: '3rem' }}>
                     <p>Cargando eventos...</p>
                 </div>
             ) : events.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '3rem' }}>
+                <div className="container" style={{ textAlign: 'center', padding: '3rem' }}>
                     <p>No hay eventos registrados aún.</p>
                 </div>
             ) : (
-                <div className="photos-grid">
+                <div className="container photos-grid" style={{ marginTop: '2rem' }}>
                     {events.map((event) => (
                         <div className="flip-card" key={event.id}>
                             <div className="flip-card-inner">

@@ -10,7 +10,7 @@ const Home = () => {
             <section className="hero">
                 <div className="hero-overlay"></div>
                 <div className="container hero-content animate-fade-in">
-                    <h1>Bienvenidos a la Iglesia Presbiteriana</h1>
+                    <h1>Bienvenidos a la primera iglesia Presbiteriana de Villa Alemana </h1>
                     <p>Un lugar para crecer en fe, esperanza y amor.</p>
                     <div className="hero-buttons">
                         <Link to="/contactos" className="btn btn-primary">Visítanos</Link>

@@ -254,7 +254,9 @@ const AdminPanel = () => {
             return announcements.map(item => (
                 <div key={item.id} className="admin-card">
                     <h3>{item.title}</h3>
-                    <p className="date">{item.date}</p>
+                    <p className="date">
+                        {item.date} {item.end_date ? ` - ${item.end_date}` : ''}
+                    </p>
                     <div className="actions">
                         <button onClick={() => openModal(item)} className="btn-icon"><Edit size={18} /></button>
                         <button onClick={() => handleDeleteAnnouncement(item.id)} className="btn-icon danger"><Trash2 size={18} /></button>
@@ -471,8 +473,12 @@ const AdminPanel = () => {
                                         <input name="title" defaultValue={currentItem?.title} required />
                                     </div>
                                     <div className="form-group">
-                                        <label>Fecha</label>
+                                        <label>Fecha de Inicio</label>
                                         <input type="date" name="date" defaultValue={currentItem?.date} required />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Fecha de Finalización (Opcional)</label>
+                                        <input type="date" name="end_date" defaultValue={currentItem?.end_date} />
                                     </div>
                                     <div className="form-group">
                                         <label>Hora</label>

@@ -63,7 +63,7 @@ const Announcements = () => {
                                     <span className="event-category">{event.category}</span>
                                     <h3>{event.title}</h3>
                                     <div className="event-meta">
-                                        <span><Calendar size={16} /> {event.date}</span>
+                                        <span><Calendar size={16} /> {event.date}{event.end_date ? ` al ${event.end_date}` : ''}</span>
                                         <span><Clock size={16} /> {event.time}</span>
                                         <span><MapPin size={16} /> {event.location}</span>
                                     </div>

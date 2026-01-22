@@ -8,8 +8,8 @@ const Footer = () => {
             <div className="container footer-container">
                 <div className="footer-col">
                     <div className="footer-logo">
-                        <Church size={24} />
-                        <span>Presbiteriana</span>
+                        <img src="/logo-jvl.jpg" alt="Logo JVL" className="footer-logo-img" />
+                        <span>Jesucristo Verdad Libertad</span>
                     </div>
                     <p className="footer-desc">
                         Una comunidad de fe, esperanza y amor. Únete a nosotros para adorar y servir.

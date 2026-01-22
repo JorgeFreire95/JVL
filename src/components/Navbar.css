@@ -25,6 +25,14 @@
     color: var(--primary);
 }
 
+.navbar-logo img {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+
 .navbar-desktop {
     display: none;
     align-items: center;

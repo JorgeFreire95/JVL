@@ -1,6 +1,6 @@
 # JVL - Plataforma Web para Iglesia
 
-Sistema web completo para gestión de anuncios, contactos y usuarios de una iglesia. Incluye panel de administración responsivo, autenticación segura y API REST.
+Sistema web completo para gestión de anuncios, contactos, eventos y usuarios de una iglesia. Incluye panel de administración responsivo, autenticación segura y API REST.
 
 ## 📋 Tabla de Contenidos
 
@@ -22,7 +22,7 @@ Sistema web completo para gestión de anuncios, contactos y usuarios de una igle
 - **Vite** - Build tool moderno y rápido
 - **Axios** - Cliente HTTP para peticiones API
 - **Lucide React** - Iconos vectoriales
-- **CSS3** - Estilos responsivos
+- **CSS3** - Estilos responsivos con efectos 3D
 
 ### Backend
 - **Django 5.2** - Framework web Python
@@ -74,13 +74,13 @@ cd JVL
 #### 2.1 Crear entorno virtual
 ```bash
 cd backend
-python -m venv venv
+python -m venv .venv
 
 # En Windows
-venv\Scripts\activate
+.venv\Scripts\activate
 
 # En macOS/Linux
-source venv/bin/activate
+source .venv/bin/activate
 ```
 
 #### 2.2 Instalar dependencias
@@ -110,10 +110,10 @@ python grant_admin_permissions.py
 
 #### 2.7 Iniciar servidor Django
 ```bash
-python manage.py runserver
+python manage.py runserver 127.0.0.1:8000
 ```
 
-El servidor estará disponible en `http://localhost:8000`
+El servidor estará disponible en `http://127.0.0.1:8000`
 
 ### 3. Configurar Frontend (React)
 
@@ -146,6 +146,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:5174",
     "http://localhost:3000",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5174",
 ]
 
 DATABASE = SQLite3  # Cambiar según necesidad
@@ -181,7 +183,7 @@ DATABASES = {
 - Contraseña: `admin123`
 
 #### Panel de Administración Django
-- URL: `http://localhost:8000/admin/`
+- URL: `http://127.0.0.1:8000/admin/`
 - Usuario: `superadmin`
 - Contraseña: `SuperAdmin@2025`
 
@@ -193,19 +195,25 @@ DATABASES = {
 - Establecer fecha, hora y ubicación
 - Agregar descripción detallada
 
-#### 2. Contactos
+#### 2. Eventos Realizados (Fotos)
+- Crear cartas 3D con foto frontal y sermón al reverso
+- Visualización interactiva con efecto "flip"
+- Gestión completa desde el panel de admin
+- Ideal para resumir predicaciones o eventos pasados
+
+#### 3. Contactos
 - Agregar miembros del equipo
 - Incluir foto, nombre, rol
 - Enlace directo a WhatsApp
 - Organizar por orden de aparición
 
-#### 3. Usuarios
+#### 4. Usuarios
 - Crear nuevos usuarios (solo administradores)
 - Editar perfiles de usuario
 - Asignar rol de administrador
 - Cambiar contraseñas
 
-#### 4. Seguridad
+#### 5. Seguridad
 - Login con correo electrónico
 - Prevención de sesiones duplicadas
 - Logout con limpieza de sesión
@@ -278,6 +286,7 @@ JVL/
 │   │   ├── Login.jsx
 │   │   ├── AdminPanel.jsx
 │   │   ├── Announcements.jsx
+│   │   ├── Photos.jsx
 │   │   └── ...
 │   ├── services/
 │   │   └── api.js
@@ -299,6 +308,7 @@ JVL/
 - ✅ Diseño responsivo (Mobile, Tablet, Desktop)
 - ✅ Navbar con hamburguesa en móviles
 - ✅ Panel de administración con interfaz intuitiva
+- ✅ Sección de "Fotos/Eventos" con tarjetas interactivas 3D/Flip
 - ✅ Formularios validados
 - ✅ Carga de imágenes
 - ✅ Animaciones suaves
@@ -346,6 +356,15 @@ POST   /api/contacts/       - Crear contacto
 GET    /api/contacts/{id}/  - Obtener contacto
 PUT    /api/contacts/{id}/  - Actualizar contacto
 DELETE /api/contacts/{id}/  - Eliminar contacto
+```
+
+### Eventos
+```
+GET    /api/events/         - Listar eventos
+POST   /api/events/         - Crear evento
+GET    /api/events/{id}/    - Obtener evento
+PATCH  /api/events/{id}/    - Actualizar evento
+DELETE /api/events/{id}/    - Eliminar evento
 ```
 
 ### Usuarios
@@ -401,7 +420,7 @@ kill -9 <PID>
 ```
 
 ### Error: "CORS error"
-Verificar `CORS_ALLOWED_ORIGINS` en `settings.py`
+Verificar `CORS_ALLOWED_ORIGINS` en `settings.py`. Asegúrate de incluir `http://127.0.0.1:xxxx`.
 
 ### Error: "Base de datos bloqueada"
 ```bash
@@ -432,7 +451,7 @@ Este proyecto está bajo licencia MIT. Ver archivo `LICENSE` para más detalles.
 ## 👥 Contribuidores
 
 - Desarrollador Principal: Jorge
-- Fecha: 16 de Enero de 2026
+- Fecha de actualización: 21 de Enero de 2026
 
 ---
 
@@ -445,6 +464,6 @@ Este proyecto está bajo licencia MIT. Ver archivo `LICENSE` para más detalles.
 
 ---
 
-**Última actualización**: 16 de Enero de 2026
+**Última actualización**: 21 de Enero de 2026
 
 https://jorgefreire95.github.io/JVL/

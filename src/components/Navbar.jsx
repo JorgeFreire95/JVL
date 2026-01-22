@@ -20,8 +20,8 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="container navbar-container">
         <Link to="/" className="navbar-logo">
-          <Church size={32} />
-          <span>Presbiteriana</span>
+          <img src="/logo-jvl.jpg" alt="Logo JVL" className="navbar-logo-img" style={{ maxHeight: '50px', borderRadius: '50%' }} />
+          <span>Jesucristo Verdad Libertad</span>
         </Link>
 
         <div className="navbar-desktop">

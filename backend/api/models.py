@@ -12,7 +12,8 @@ class Announcement(models.Model):
     ]
 
     title = models.CharField(max_length=200, verbose_name="Título")
-    date = models.DateField(verbose_name="Fecha")
+    date = models.DateField(verbose_name="Fecha de Inicio")
+    end_date = models.DateField(verbose_name="Fecha de Finalización", blank=True, null=True)
     time = models.CharField(max_length=100, verbose_name="Hora")
     location = models.CharField(max_length=200, verbose_name="Ubicación")
     description = models.TextField(verbose_name="Descripción")

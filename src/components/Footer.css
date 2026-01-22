@@ -29,6 +29,14 @@
     margin-bottom: 1rem;
 }
 
+.footer-logo img {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+
 .footer-desc {
     color: #94a3b8;
     line-height: 1.6;

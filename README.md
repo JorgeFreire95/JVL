@@ -466,4 +466,3 @@ Este proyecto está bajo licencia MIT. Ver archivo `LICENSE` para más detalles.
 
 **Última actualización**: 21 de Enero de 2026
 
-https://jorgefreire95.github.io/JVL/

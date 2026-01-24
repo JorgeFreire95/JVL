@@ -29,23 +29,21 @@ const Footer = () => {
                 <div className="footer-col">
                     <h3>Contacto</h3>
                     <ul className="footer-contact">
-                        <li><MapPin size={18} /> Calle Principal 123, Ciudad</li>
-                        <li><Phone size={18} /> +1 234 567 890</li>
-                        <li><Mail size={18} /> contacto@iglesia.com</li>
+                        <li><MapPin size={18} /> Cumming 624, Villa Alemana, Chile</li>
+                        <li><Mail size={18} /> presbiteriana.villaalemana@gmail.com</li>
                     </ul>
                 </div>
 
                 <div className="footer-col">
                     <h3>Síguenos</h3>
                     <div className="social-links">
-                        <a href="#" className="social-link"><Facebook size={20} /></a>
-                        <a href="#" className="social-link"><Instagram size={20} /></a>
-                        <a href="#" className="social-link"><Youtube size={20} /></a>
+                        <a href="https://www.facebook.com/jesucristoverdadylibertad" className="social-link"><Facebook size={20} /></a>
+                        <a href="https://www.instagram.com/presbiteriana_villa_alemana/" className="social-link"><Instagram size={20} /></a>
                     </div>
                 </div>
             </div>
             <div className="footer-bottom">
-                <p>&copy; {new Date().getFullYear()} Iglesia Presbiteriana. Todos los derechos reservados.</p>
+                <p>&copy; {new Date().getFullYear()} Iglesia Jesucristo Verdad Libertad. Todos los derechos reservados.</p>
             </div>
         </footer>
     );

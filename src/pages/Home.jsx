@@ -28,20 +28,20 @@ const Home = () => {
                     <div className="services-grid">
                         <div className="service-card">
                             <div className="service-icon"><Calendar size={32} /></div>
-                            <h3>Culto Dominical</h3>
-                            <p>Domingos 10:00 AM</p>
+                            <h3>Culto de Adoración</h3>
+                            <p>Domingos 11:00 AM</p>
                             <p className="service-desc">Adoración, alabanza y predicación de la Palabra.</p>
                         </div>
                         <div className="service-card">
                             <div className="service-icon"><Clock size={32} /></div>
                             <h3>Escuela Dominical</h3>
-                            <p>Domingos 9:00 AM</p>
+                            <p>Domingos 12:00 PM</p>
                             <p className="service-desc">Clases bíblicas para todas las edades.</p>
                         </div>
                         <div className="service-card">
                             <div className="service-icon"><MapPin size={32} /></div>
-                            <h3>Estudio Bíblico</h3>
-                            <p>Miércoles 7:00 PM</p>
+                            <h3>Grupos con Vidas</h3>
+                            <p>Miércoles y Jueves 7:00 PM</p>
                             <p className="service-desc">Profundizando en las escrituras juntos.</p>
                         </div>
                     </div>

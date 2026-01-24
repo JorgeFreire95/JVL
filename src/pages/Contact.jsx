@@ -42,29 +42,30 @@ const Contact = () => {
                             <div className="icon-box"><MapPin size={24} /></div>
                             <div>
                                 <h3>Dirección</h3>
-                                <p>Calle Principal 123, Ciudad, País</p>
+                                <p>Cumming 624, Villa Alemana, Chile</p>
                             </div>
                         </div>
 
-                        <div className="info-item">
-                            <div className="icon-box"><Phone size={24} /></div>
-                            <div>
-                                <h3>Teléfono</h3>
-                                <p>+1 234 567 890</p>
-                            </div>
-                        </div>
-
+                        
                         <div className="info-item">
                             <div className="icon-box"><Mail size={24} /></div>
                             <div>
                                 <h3>Email</h3>
-                                <p>contacto@iglesia.com</p>
+                                <p>presbiteriana.villaalemana@gmail.com</p>
                             </div>
                         </div>
 
                         <div className="map-container">
-                            {/* Placeholder for Google Maps */}
-                            <div className="map-placeholder">Mapa de Ubicación</div>
+                            <iframe
+                                title="Ubicación de la Iglesia"
+                                src="https://maps.google.com/maps?q=Cumming%20624%2C%20Villa%20Alemana%2C%20Chile&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                                width="100%"
+                                height="100%"
+                                style={{ border: 0 }}
+                                allowFullScreen=""
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade">
+                            </iframe>
                         </div>
                     </div>
 

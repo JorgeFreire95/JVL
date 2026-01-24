@@ -17,7 +17,7 @@ Sistema web completo para gestión de anuncios, contactos, eventos y usuarios de
 ## 🛠️ Tecnologías Utilizadas
 
 ### Frontend
-- **React 18** - Librería para construir interfaces de usuario
+- **React 19** - Librería para construir interfaces de usuario
 - **React Router** - Enrutamiento de aplicaciones
 - **Vite** - Build tool moderno y rápido
 - **Axios** - Cliente HTTP para peticiones API
@@ -399,7 +399,21 @@ DELETE /api/users/{id}/     - Eliminar usuario
    # Servir la carpeta 'dist' con nginx o similar
    ```
 
-3. **Servidor**
+3. **Despliegue en GitHub Pages (Frontend)**
+   Este proyecto está configurado para desplegarse automáticamente en GitHub Pages.
+   ```bash
+   # Construir y desplegar
+   npm run deploy
+   ```
+   La aplicación estará disponible en: `https://JorgeFreire95.github.io/JVL/`
+
+4. **Despliegue en Railway (Backend)**
+   El proyecto incluye configuración para Railway (`railway.toml`, `Procfile`).
+   - Conectar repositorio a Railway
+   - Las variables de entorno se configurarán automáticamente
+   - El comando de inicio está definido en `start.sh` o `Procfile`
+
+5. **Servidor Manual**
    - Usar Gunicorn para Django
    - Nginx como proxy inverso
    - SSL/TLS certificado
@@ -451,7 +465,7 @@ Este proyecto está bajo licencia MIT. Ver archivo `LICENSE` para más detalles.
 ## 👥 Contribuidores
 
 - Desarrollador Principal: Jorge
-- Fecha de actualización: 21 de Enero de 2026
+- Fecha de actualización: 24 de Enero de 2026
 
 ---
 
@@ -464,5 +478,5 @@ Este proyecto está bajo licencia MIT. Ver archivo `LICENSE` para más detalles.
 
 ---
 
-**Última actualización**: 21 de Enero de 2026
+**Última actualización**: 24 de Enero de 2026
 

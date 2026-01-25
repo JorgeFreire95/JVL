@@ -10,7 +10,7 @@ const Home = () => {
             <section className="hero">
                 <div className="hero-overlay"></div>
                 <div className="container hero-content animate-fade-in">
-                    <h1>Bienvenidos a la primera iglesia Presbiteriana de Villa Alemana </h1>
+                    <h1>Bienvenidos a nuestra Iglesia Jesucristo Verdad y Libertad</h1>
                     <p>Un lugar para crecer en fe, esperanza y amor.</p>
                     <div className="hero-buttons">
                         <Link to="/contactos" className="btn btn-primary">Visítanos</Link>
@@ -40,9 +40,9 @@ const Home = () => {
                         </div>
                         <div className="service-card">
                             <div className="service-icon"><MapPin size={32} /></div>
-                            <h3>Grupos con Vidas</h3>
-                            <p>Miércoles y Jueves 7:00 PM</p>
-                            <p className="service-desc">Profundizando en las escrituras juntos.</p>
+                            <h3>Reunión de oración</h3>
+                            <p>Miércoles 7:00 PM</p>
+                            <p className="service-desc">Orando juntos por nuestras familias, nuestra iglesia y nuestra comunidad.</p>
                         </div>
                     </div>
                 </div>

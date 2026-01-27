@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Announcement, ContactCard, Event
 import hashlib
+import base64
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=False)
@@ -88,11 +89,67 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ContactCardSerializer(serializers.ModelSerializer):
+    photo = serializers.ImageField(write_only=True, required=False)
+
     class Meta:
         model = ContactCard
-        fields = '__all__'
+        exclude = ['photo_data', 'content_type']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if instance.photo_data and instance.content_type:
+            try:
+                encoded = base64.b64encode(instance.photo_data).decode('utf-8')
+                representation['photo'] = f"data:{instance.content_type};base64,{encoded}"
+            except Exception:
+                representation['photo'] = None
+        else:
+            representation['photo'] = None
+        return representation
+
+    def create(self, validated_data):
+        photo = validated_data.pop('photo', None)
+        if photo:
+            validated_data['photo_data'] = photo.read()
+            validated_data['content_type'] = photo.content_type
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        photo = validated_data.pop('photo', None)
+        if photo:
+            validated_data['photo_data'] = photo.read()
+            validated_data['content_type'] = photo.content_type
+        return super().update(instance, validated_data)
 
 class EventSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(write_only=True, required=False)
+
     class Meta:
         model = Event
-        fields = '__all__'
+        exclude = ['image_data', 'content_type']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if instance.image_data and instance.content_type:
+            try:
+                encoded = base64.b64encode(instance.image_data).decode('utf-8')
+                representation['image'] = f"data:{instance.content_type};base64,{encoded}"
+            except Exception:
+                representation['image'] = None
+        else:
+            representation['image'] = None
+        return representation
+
+    def create(self, validated_data):
+        image = validated_data.pop('image', None)
+        if image:
+            validated_data['image_data'] = image.read()
+            validated_data['content_type'] = image.content_type
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        image = validated_data.pop('image', None)
+        if image:
+            validated_data['image_data'] = image.read()
+            validated_data['content_type'] = image.content_type
+        return super().update(instance, validated_data)

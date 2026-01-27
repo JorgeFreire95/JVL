@@ -24,8 +24,12 @@ const Photos = () => {
     // Helper to format date
     const formatDate = (dateString) => {
         if (!dateString) return '';
+        const date = new Date(dateString);
+        // Check if date is valid
+        if (isNaN(date.getTime())) return '';
+
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString('es-ES', options);
+        return date.toLocaleDateString('es-ES', options);
     };
 
     return (
@@ -67,12 +71,11 @@ const Photos = () => {
                                         </div>
                                     )}
                                     <div className="front-caption">
-                                        <h3>{event.title}</h3>
-                                        <p>{formatDate(event.date)}</p>
+                                        <p style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{formatDate(event.date)}</p>
                                     </div>
                                 </div>
                                 <div className="flip-card-back">
-                                    <h3>Sermón Expuesto</h3>
+                                    <h3>{event.title}</h3>
                                     <div className="sermon-text">
                                         {event.sermon}
                                     </div>

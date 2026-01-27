@@ -25,6 +25,43 @@ const AdminPanel = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [formErrors, setFormErrors] = useState({});
+
+    // Helper to validate date in real-time
+    const validateDate = (name, value) => {
+        if (!value) {
+            setFormErrors(prev => {
+                const newErrors = { ...prev };
+                delete newErrors[name];
+                return newErrors;
+            });
+            return;
+        }
+
+        // Valida formato estricto: AAAA-MM-DD
+        // Esto asegura 4 dígitos para año, 2 para mes y 2 para día
+        const regex = /^\d{4}-\d{2}-\d{2}$/;
+
+        if (!regex.test(value)) {
+            setFormErrors(prev => ({ ...prev, [name]: 'La fecha debe ser válida (AAAA-MM-DD)' }));
+        } else {
+            // Validación extra para asegurar que el mes sea lógico (aunque el input date suele manejarlo)
+            const parts = value.split('-');
+            const year = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10);
+            const day = parseInt(parts[2], 10);
+
+            if (year < 1000 || month < 1 || month > 12 || day < 1 || day > 31) {
+                setFormErrors(prev => ({ ...prev, [name]: 'Fecha inválida' }));
+            } else {
+                setFormErrors(prev => {
+                    const newErrors = { ...prev };
+                    delete newErrors[name];
+                    return newErrors;
+                });
+            }
+        }
+    };
 
     // Initial Data Fetch
     useEffect(() => {
@@ -548,7 +585,14 @@ const AdminPanel = () => {
                                     </div>
                                     <div className="form-group">
                                         <label>Fecha</label>
-                                        <input type="date" name="date" defaultValue={currentItem?.date} required />
+                                        <input
+                                            type="date"
+                                            name="date"
+                                            defaultValue={currentItem?.date}
+                                            required
+                                            onChange={(e) => validateDate(e.target.name, e.target.value)}
+                                        />
+                                        {formErrors.date && <span className="error-text" style={{ color: 'red', fontSize: '0.85rem', marginTop: '0.25rem' }}>{formErrors.date}</span>}
                                     </div>
                                     <div className="form-group">
                                         <label>Sermón Expuesto</label>

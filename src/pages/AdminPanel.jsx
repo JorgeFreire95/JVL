@@ -529,6 +529,7 @@ const AdminPanel = () => {
                                         <label>Categoría</label>
                                         <select name="category" defaultValue={currentItem?.category || 'Iglesia General'}>
                                             <option value="Jóvenes">Jóvenes</option>
+                                            <option value="Adolescentes">Adolescentes</option>
                                             <option value="Iglesia General">Iglesia General</option>
                                             <option value="Niños">Niños</option>
                                             <option value="Mujeres">Mujeres</option>

@@ -5,6 +5,7 @@ import uuid
 class Announcement(models.Model):
     CATEGORY_CHOICES = [
         ('Jóvenes', 'Jóvenes'),
+        ('Adolescentes', 'Adolescentes'),
         ('Iglesia General', 'Iglesia General'),
         ('Niños', 'Niños'),
         ('Mujeres', 'Mujeres'),

@@ -157,9 +157,10 @@ export const deleteEvent = async (id) => {
     await api.delete(`/events/${id}/`);
 };
 
-export const loginUser = async (credentials) => {
+export const loginUser = async (credentials, forceLogout = false) => {
     try {
-        const response = await api.post('/login/', credentials);
+        const payload = { ...credentials, force_logout: forceLogout };
+        const response = await api.post('/login/', payload);
         return response.data;
     } catch (error) {
         console.error('Error en loginUser:', error);

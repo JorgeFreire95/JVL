@@ -18,8 +18,7 @@ def get_md5_hash(text):
 def login_view(request):
     email = request.data.get('email')
     password = request.data.get('password')
-    
-    print(f"Intento de login - Email: {email}, Contraseña MD5: {get_md5_hash(password)}")
+    print(f"Intento de login - Email: {email}")
     
     # Buscar el usuario por email
     try:
@@ -28,12 +27,10 @@ def login_view(request):
         if user.check_password(password):
             # Verificar si el usuario ya tiene una sesión activa
             existing_session = ActiveSession.objects.filter(user=user).first()
+            
             if existing_session:
-                print(f"Usuario {email} ya tiene una sesión activa")
-                return Response({
-                    'error': 'Ya tienes una sesión activa. Cierra sesión primero.',
-                    'has_active_session': True
-                }, status=status.HTTP_409_CONFLICT)
+                print(f"Sesión anterior detectada para {email}. Cerrándola automáticamente.")
+                existing_session.delete()
             
             # Crear un nuevo token de sesión
             session_token = str(uuid.uuid4())

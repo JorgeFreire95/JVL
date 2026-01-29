@@ -8,6 +8,8 @@ const Login = () => {
     const navigate = useNavigate();
     const [error, setError] = useState('');
     const [isGitHubPages, setIsGitHubPages] = useState(false);
+    const [showForceLogout, setShowForceLogout] = useState(false);
+    const [pendingCredentials, setPendingCredentials] = useState(null);
 
     useEffect(() => {
         // Detectar si estamos en GitHub Pages
@@ -32,18 +34,42 @@ const Login = () => {
                     session_token: response.session_token,
                     password_md5: response.password_md5
                 };
-                localStorage.setItem('user', JSON.stringify(userData));
+                localStorage.removeItem('user'); // Clean up old persistent sessions
+                sessionStorage.setItem('user', JSON.stringify(userData));
                 navigate('/admin-panel');
             }
         } catch (err) {
             console.error(err);
             if (err.response?.status === 409 || err.response?.data?.has_active_session) {
-                setError('Ya tienes una sesión activa. Cierra sesión primero desde el panel.');
+                setError('Ya tienes una sesión activa en otro dispositivo.');
+                setShowForceLogout(true);
+                setPendingCredentials({ email, password });
             } else if (err.message === 'No se pudo conectar al servidor') {
                 setError('No se pudo conectar al servidor. Intenta en la versión local.');
             } else {
                 setError('Credenciales inválidas. Intenta de nuevo.');
             }
+        }
+    };
+
+    const handleForceLogin = async () => {
+        if (!pendingCredentials) return;
+
+        try {
+            const response = await loginUser(pendingCredentials, true);
+            if (response.user) {
+                const userData = {
+                    ...response.user,
+                    session_token: response.session_token,
+                    password_md5: response.password_md5
+                };
+                localStorage.removeItem('user'); // Clean up old persistent sessions
+                sessionStorage.setItem('user', JSON.stringify(userData));
+                navigate('/admin-panel');
+            }
+        } catch (err) {
+            console.error(err);
+            setError('Error al cerrar la sesión anterior via forzado.');
         }
     };
 
@@ -78,7 +104,30 @@ const Login = () => {
                 )}
 
                 <form className="login-form" onSubmit={handleLogin}>
-                    {error && <div className="error-message" style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
+                    {error && (
+                        <div className="error-message" style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>
+                            {error}
+                            {showForceLogout && (
+                                <button
+                                    type="button"
+                                    onClick={handleForceLogin}
+                                    style={{
+                                        display: 'block',
+                                        margin: '0.5rem auto',
+                                        padding: '0.5rem 1rem',
+                                        backgroundColor: '#dc3545',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        cursor: 'pointer',
+                                        fontSize: '0.9rem'
+                                    }}
+                                >
+                                    Cerrar otra sesión e ingresar
+                                </button>
+                            )}
+                        </div>
+                    )}
                     <div className="form-group">
                         <label htmlFor="email">Correo Electrónico</label>
                         <input type="email" id="email" placeholder="Tu correo electrónico" required />

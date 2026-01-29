@@ -65,8 +65,8 @@ const AdminPanel = () => {
 
     // Initial Data Fetch
     useEffect(() => {
-        // Obtener el usuario actual del localStorage
-        const storedUser = localStorage.getItem('user');
+        // Obtener el usuario actual del sessionStorage (se borra al cerrar pestaña)
+        const storedUser = sessionStorage.getItem('user');
         if (storedUser) {
             try {
                 const user = JSON.parse(storedUser);
@@ -281,10 +281,38 @@ const AdminPanel = () => {
         } catch (error) {
             console.error("Error al cerrar sesión en el servidor:", error);
         } finally {
-            localStorage.removeItem('user');
+            sessionStorage.removeItem('user');
             navigate('/');
         }
     };
+
+    // Efecto para detectar cierre de pestaña/navegador y enviar logout al servidor
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            if (currentUser?.session_token) {
+                // Construir la URL completa
+                // Asumimos que la baseURL está disponible o la construimos similar a api.js
+                // Nota: Esto es un "best effort", no siempre garantizado por el navegador
+                const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                const baseUrl = isLocal
+                    ? 'http://127.0.0.1:8000/api'
+                    : 'https://jvl-backend.up.railway.app/api';
+
+                const url = `${baseUrl}/logout/`;
+                const data = new FormData();
+                data.append('session_token', currentUser.session_token);
+
+                // sendBeacon es más fiable para eventos de descarga
+                navigator.sendBeacon(url, data);
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [currentUser]);
 
     const renderContent = () => {
         if (activeTab === 'announcements') {

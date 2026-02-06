@@ -1,6 +1,7 @@
 import React from 'react';
 import { Calendar, Clock, MapPin, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import ImageSlider from '../components/ImageSlider';
 import './Home.css';
 
 const Home = () => {
@@ -63,8 +64,7 @@ const Home = () => {
                         </Link>
                     </div>
                     <div className="welcome-image">
-                        {/* Placeholder for an image */}
-                        <div className="image-placeholder">Imagen de la Comunidad</div>
+                        <ImageSlider />
                     </div>
                 </div>
             </section>
